@@ -332,4 +332,63 @@ char* TemplatesToString();
     bool  Save (char *filename);
     */
 
+   char* ViewXML() {
+    if (apNodoRaiz == nullptr) {
+        return nullptr; // cadena vacia
+    }
+    
+    String xmlString;
+    construirXML(apNodoRaiz, xmlString);
+    return xmlString.mostrarCadena();
+    }
+
+    void construirXML(Nodo* nodo, String& xmlString) {
+        if (nodo == nullptr) {
+            return;
+        }
+
+        // Agregar la etiqueta de apertura
+        xmlString.concatenar("<");
+        xmlString.concatenar(nodo->getNombre());
+        String atributos = nodo->getAtributos();
+        if (atributos.mostrarCadena() != nullptr) {
+            xmlString.concatenar(" ");
+            xmlString.concatenar(atributos.mostrarCadena());
+        }
+        
+        xmlString.concatenar(">");
+
+        String contenido = nodo->getContenido();
+        if (contenido.mostrarCadena() != nullptr) {
+            xmlString.concatenar(contenido.mostrarCadena());
+        }
+
+        for (int i = 0; i < nodo->getNumHijos(); i++) {
+            construirXML(nodo->getHijo(i), xmlString);
+        }
+
+        // Agregar etiqueta de cierre
+        xmlString.concatenar("</");
+        xmlString.concatenar(nodo->getNombre());
+        xmlString.concatenar(">");
+    }
+
+    // .*:*::*.*::*.*:*::*.*::*.*:*::*.*::*.
+
+    bool Save(const char* filename) {
+        String xmlString = ViewXML(); // la cadena del XML
+        if (xmlString.mostrarCadena() == nullptr) {
+            return false; // Si la cadena esta null, no puede crear el XML
+        }
+
+        std::ofstream file(filename);
+        if (!file.is_open()) {
+            return false; // No pudo abrir el archivo
+        }
+
+        file << xmlString.mostrarCadena();
+        file.close();
+        return true; // Guardado
+        }
+
 };

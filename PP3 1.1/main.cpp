@@ -114,9 +114,22 @@ int main() {
         std::cout << "Error al eliminar el nodo." << std::endl;
     }
 
+
+    //Mostrar XML y guardarlo
+
+    std::cout<<"XML creado:"<<std::endl;
+    std::cout<<xmlDoc.ViewXML()<<std::endl;
+
+    if(xmlDoc.Save("Primer XML")){
+        std::cout<<"XML guardado con exito."<<std::endl;
+    } else {
+        std::cout<<"Hubo un error al guardar el XML."<<std::endl;
+    }
+
     return 0;
 }
-
+  
+  
 
 /*
 Para compilar y ejecutar:
